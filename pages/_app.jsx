@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import Providers from '@/services/provider'
 import { Footer, Header } from '@/components'
 import { Provider } from 'react-redux'
-import { store } from '@store'
+import { store } from '@/store'
 
 export default function App({ Component, pageProps }) {
   const [showChild, setShowChild] = useState(false)
