@@ -115,16 +115,16 @@ async function main() {
       })
     )
 
-    await delay(2500) // Wait for 2.5 seconds
+    // await delay(2500) // Wait for 2.5 seconds
 
-    // Process #2
-    await Promise.all(
-      Array(dataCount)
-        .fill()
-        .map(async (_, i) => {
-          await bookApartments(dappAirBnbContract, i + 1, dates1)
-        })
-    )
+    // // Process #2
+    // await Promise.all(
+    //   Array(dataCount)
+    //     .fill()
+    //     .map(async (_, i) => {
+    //       await bookApartments(dappAirBnbContract, i + 1, dates1)
+    //     })
+    // )
     console.log('Items dummy data seeded...')
   } catch (error) {
     console.error('Unhandled error:', error)

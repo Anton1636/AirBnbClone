@@ -1,8 +1,17 @@
 import Head from 'next/head'
-import { useAccount } from 'wagmi'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { generateFakeApartment, generateFakeReviews } from '@/utils/fakeData'
+import { globalActions } from '@/store/globalSlices'
+import { useDispatch, useSelector } from 'react-redux'
 import { Title, ImageGrid, Description, Calendar, Actions, Review, AddReview } from '@/components'
+import {
+  getReviews,
+  getApartment,
+  getBookedDates,
+  getSecurityFee,
+  getQualifiedReviewers,
+} from '@/services/blockchain'
+import { useAccount } from 'wagmi'
 
 export default function Room({
   apartmentData,
@@ -13,12 +22,32 @@ export default function Room({
 }) {
   const router = useRouter()
   const { roomId } = router.query
+  const dispatch = useDispatch()
   const { address } = useAccount()
-  const apartment = apartmentData
-  const timestamps = timestampsData
-  const reviews = reviewsData
 
-  const handleReviewOpen = () => {}
+  const { setApartment, setTimestamps, setReviewModal, setReviews, setSecurityFee } = globalActions
+  const { apartment, timestamps, reviews } = useSelector((states) => states.globalStates)
+
+  useEffect(() => {
+    dispatch(setApartment(apartmentData))
+    dispatch(setTimestamps(timestampsData))
+    dispatch(setReviews(reviewsData))
+    dispatch(setSecurityFee(securityFee))
+  }, [
+    dispatch,
+    setApartment,
+    apartmentData,
+    setTimestamps,
+    timestampsData,
+    setReviews,
+    reviewsData,
+    setSecurityFee,
+    securityFee,
+  ])
+
+  const handleReviewOpen = () => {
+    dispatch(setReviewModal('scale-100'))
+  }
 
   return (
     <>
@@ -69,11 +98,11 @@ export default function Room({
 
 export const getServerSideProps = async (context) => {
   const { roomId } = context.query
-  const apartmentData = generateFakeApartment(roomId)[0]
-  const timestampsData = []
-  const qualifiedReviewers = []
-  const reviewsData = generateFakeReviews(4)
-  const securityFee = 5
+  const apartmentData = await getApartment(roomId)
+  const timestampsData = await getBookedDates(roomId)
+  const qualifiedReviewers = await getQualifiedReviewers(roomId)
+  const reviewsData = await getReviews(roomId)
+  const securityFee = await getSecurityFee()
 
   return {
     props: {
