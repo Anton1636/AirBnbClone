@@ -33,7 +33,7 @@ export default function Edit({ apartment }) {
 
     await toast.promise(
       new Promise(async (resolve, reject) => {
-        await updateApartment(params)
+        updateApartment(params)
           .then(async () => {
             navigate.push('/room/' + apartment.id)
             resolve()

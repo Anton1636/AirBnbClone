@@ -11,7 +11,7 @@ const Header = () => {
       <Link href={'/'}>
         <p className="text-[#ff385c] flex items-center text-xl">
           <FaAirbnb className=" font-semibold" />
-          DappBnb
+          DappAirBnb
         </p>
       </Link>
 
